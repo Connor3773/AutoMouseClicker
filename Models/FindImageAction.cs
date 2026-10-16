@@ -9,6 +9,7 @@ namespace Ming_AutoClicker.Models
     public class FindImageAction : MacroAction
     {
         private double _matchThreshold = 0.8;
+        private int _skipTimeoutSeconds;
 
         /// <summary>
         /// 动作类型为找图
@@ -38,6 +39,17 @@ namespace Ming_AutoClicker.Models
         /// </summary>
         public bool WaitUntilFound { get; set; } = false;
 
+        public bool SkipIfNotFound { get; set; } = false;
+
+        /// <summary>
+        /// Seconds to search before skipping; zero means one matching attempt.
+        /// </summary>
+        public int SkipTimeoutSeconds
+        {
+            get => _skipTimeoutSeconds;
+            set => _skipTimeoutSeconds = Math.Clamp(value, 0, 300);
+        }
+
         /// <summary>
         /// 是否启用宽范围自适应缩放匹配
         /// </summary>
@@ -66,7 +78,9 @@ namespace Ming_AutoClicker.Models
             var fileName = Path.GetFileName(ImagePath);
             var waitText = WaitUntilFound
                 ? LocalizationService.Current.GetString("ActionWaitingSuffix")
-                : string.Empty;
+                : SkipIfNotFound
+                    ? LocalizationService.Current.Format("ActionSkipIfNotFoundSuffix", SkipTimeoutSeconds)
+                    : string.Empty;
             var operation = Operation switch
             {
                 "Click" => LocalizationService.Current.GetString("EditorLeftClick"),
@@ -90,6 +104,8 @@ namespace Ming_AutoClicker.Models
                 ImagePath = ImagePath,
                 MatchThreshold = MatchThreshold,
                 WaitUntilFound = WaitUntilFound,
+                SkipIfNotFound = SkipIfNotFound,
+                SkipTimeoutSeconds = SkipTimeoutSeconds,
                 AdaptiveScale = AdaptiveScale,
                 Operation = Operation,
                 OffsetX = OffsetX,

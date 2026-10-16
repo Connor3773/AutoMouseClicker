@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="../../Ming-AutoClicker.csproj" />
     <Page Include="../../Localization/Strings.en-US.xaml" Link="Localization/Strings.en-US.xaml" />
+    <Page Include="../../Localization/Strings.zh-CN.xaml" Link="Localization/Strings.zh-CN.xaml" />
   </ItemGroup>
 </Project>

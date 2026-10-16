@@ -528,7 +528,9 @@ namespace Ming_AutoClicker.ViewModels
             OnUIThread(() =>
             {
                 var actionDesc = e.Action?.GetDescription() ?? LocalizationService.Current.GetString("ActionUnknown");
-                var status = LocalizationService.Current.GetString(e.Success ? "StatusSuccess" : "StatusFailed");
+                var statusKey = !e.Success ? "StatusFailed"
+                    : e.MatchResult is { Found: false } ? "StatusSkipped" : "StatusSuccess";
+                var status = LocalizationService.Current.GetString(statusKey);
                 StatusMessage = LocalizationService.Current.Format(
                     "StatusActionResult", e.ActionIndex + 1, actionDesc, status);
             });

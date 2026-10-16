@@ -88,6 +88,10 @@ namespace Ming_AutoClicker.ViewModels
                     OnPropertyChanged(nameof(HasScreenshot));
                     OnPropertyChanged(nameof(MatchThreshold));
                     OnPropertyChanged(nameof(WaitUntilFound));
+                    OnPropertyChanged(nameof(SkipIfNotFound));
+                    OnPropertyChanged(nameof(SkipTimeoutSeconds));
+                    OnPropertyChanged(nameof(CanSkipIfNotFound));
+                    OnPropertyChanged(nameof(CanEditSkipTimeout));
                     OnPropertyChanged(nameof(AdaptiveScale));
                     OnPropertyChanged(nameof(Operation));
                     OnPropertyChanged(nameof(OffsetX));
@@ -314,6 +318,41 @@ namespace Ming_AutoClicker.ViewModels
                 if (FindImageAction != null)
                 {
                     FindImageAction.WaitUntilFound = value;
+                    _macro.UpdatedAt = DateTime.Now;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(CanSkipIfNotFound));
+                    OnPropertyChanged(nameof(CanEditSkipTimeout));
+                }
+            }
+        }
+
+        public bool CanSkipIfNotFound => FindImageAction != null && !WaitUntilFound;
+
+        public bool CanEditSkipTimeout => CanSkipIfNotFound && SkipIfNotFound;
+
+        public bool SkipIfNotFound
+        {
+            get => FindImageAction?.SkipIfNotFound ?? false;
+            set
+            {
+                if (FindImageAction != null && FindImageAction.SkipIfNotFound != value)
+                {
+                    FindImageAction.SkipIfNotFound = value;
+                    _macro.UpdatedAt = DateTime.Now;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(CanEditSkipTimeout));
+                }
+            }
+        }
+
+        public int SkipTimeoutSeconds
+        {
+            get => FindImageAction?.SkipTimeoutSeconds ?? 0;
+            set
+            {
+                if (FindImageAction != null)
+                {
+                    FindImageAction.SkipTimeoutSeconds = value;
                     _macro.UpdatedAt = DateTime.Now;
                     OnPropertyChanged();
                 }

@@ -483,6 +483,8 @@ namespace Ming_AutoClicker.Services
                     bestCandidate = result;
 
                 var remainingDelay = Math.Max(0, intervalMs - (int)iterationStopwatch.ElapsedMilliseconds);
+                if (timeoutMs != Timeout.Infinite)
+                    remainingDelay = (int)Math.Min(remainingDelay, Math.Max(0, timeoutMs - totalStopwatch.ElapsedMilliseconds));
                 try
                 {
                     if (remainingDelay > 0)

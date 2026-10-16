@@ -46,6 +46,12 @@ namespace Ming_AutoClicker.Views
             }
         }
 
+        private void OnSkipTimeoutLostFocus(object sender, RoutedEventArgs e)
+        {
+            // Show the clamped value, or restore the last valid integer after invalid input.
+            ((TextBox)sender).GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
+        }
+
         private void OnSaveCompleted(object? sender, EventArgs e)
         {
             if (_viewModel == null) return;

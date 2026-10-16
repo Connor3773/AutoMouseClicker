@@ -412,13 +412,13 @@ namespace Ming_AutoClicker.Services
 
             MatchResult? matchResult = null;
 
-            // 如果需要等待直到找到
-            if (action.WaitUntilFound)
+            // Continuous waiting takes precedence over the optional skip timeout.
+            if (action.WaitUntilFound || (action.SkipIfNotFound && action.SkipTimeoutSeconds > 0))
             {
                 matchResult = await _imageMatchService.WaitForImageAsync(
                     action.ImagePath,
                     action.MatchThreshold,
-                    Timeout.Infinite,
+                    action.WaitUntilFound ? Timeout.Infinite : action.SkipTimeoutSeconds * 1000,
                     FindImageIntervalMs,
                     cancellationToken,
                     action.AdaptiveScale);
@@ -441,6 +441,12 @@ namespace Ming_AutoClicker.Services
 
             if (!matchResult.Found)
             {
+                if (!action.WaitUntilFound && action.SkipIfNotFound &&
+                    matchResult.FailureReason is MatchFailureReason.BelowThreshold or MatchFailureReason.TimedOut)
+                {
+                    return (true, LocalizationService.Current.Format("ExecutorImageSkipped", action.SkipTimeoutSeconds), matchResult);
+                }
+
                 var reason = string.IsNullOrWhiteSpace(matchResult.ErrorMessage)
                     ? LocalizationService.Current.GetMatchFailureText(matchResult.FailureReason)
                     : matchResult.ErrorMessage;

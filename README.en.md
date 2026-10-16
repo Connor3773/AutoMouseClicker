@@ -129,6 +129,8 @@ The application checks GitHub Releases on startup. When a required update is ava
 | Operation | Left-click or right-click after a match |
 | X/Y offset | Offset from the center of the matched image |
 | Wait until found | Keep searching until the image is found or you manually stop, with no 30-second timeout; invalid templates, capture failures, and matching errors still stop with an error |
+| Skip if not found | Continue to the next step on a missing image; skipping the last step follows the original loop count and interval. Off by default, preserving the stop-on-miss behavior of existing macros |
+| Search before skipping | Integer seconds from 0 to 300. 0 tries once; 1-300 keeps searching until found or timed out. Wait until found takes precedence. Invalid templates, capture failures, and matching errors are never skipped |
 | Adaptive scaling | Search a wider scale range when DPI or window scaling changes |
 
 ### Settings and Hotkeys
@@ -154,6 +156,11 @@ Supported hotkeys are `F1`–`F12`, or `Ctrl` / `Alt` / `Shift` combined with a 
 ---
 
 ## Changelog
+
+### v1.0.2
+
+- Added per-step "Skip if not found" with a configurable 0-300 second search timeout; skipped steps continue through the original macro loop settings.
+- Preserved infinite waiting, manual stopping, error handling, and the default behavior of existing macros.
 
 ### v1.0.1
 

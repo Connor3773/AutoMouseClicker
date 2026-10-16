@@ -60,6 +60,9 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
 
+    - name: Macro regression tests
+      run: dotnet run --project tests/WaitUntilFound.RegressionTests/WaitUntilFound.RegressionTests.csproj --configuration Release
+
     - name: Publish EXE
       if: startsWith(github.ref, 'refs/tags/v')
       run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true

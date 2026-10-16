@@ -39,4 +39,11 @@
     <sys:String x:Key="TrayShow">显示主窗口</sys:String>
     <sys:String x:Key="TrayExit">退出</sys:String>
     <sys:String x:Key="TrayMinimized">程序仍在后台运行。右击托盘图标可退出。</sys:String>
+    <sys:String x:Key="EditorSkipIfNotFound">未找到时跳过</sys:String>
+    <sys:String x:Key="EditorSkipIfNotFoundHint">未匹配到目标时继续下一步。“等待直到找到”优先；图片无效、截图或匹配异常仍会停止宏。</sys:String>
+    <sys:String x:Key="EditorSkipTimeoutSeconds">查找多少秒后跳过（0-300 秒）</sys:String>
+    <sys:String x:Key="EditorSkipTimeoutHint">0：只找一次；1-300：持续查找，找到即执行，超时跳过。仍按原循环设置执行。</sys:String>
+    <sys:String x:Key="ActionSkipIfNotFoundSuffix">（{0} 秒未找到则跳过）</sys:String>
+    <sys:String x:Key="ExecutorImageSkipped">按设置查找 {0} 秒后仍未找到，已跳过此步骤</sys:String>
+    <sys:String x:Key="StatusSkipped">已跳过</sys:String>
 </ResourceDictionary>

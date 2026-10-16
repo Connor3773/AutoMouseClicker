@@ -3,7 +3,7 @@ using System.Windows;
 using Ming_AutoClicker.Models;
 using Ming_AutoClicker.Services;
 
-internal static class Program
+internal static partial class Program
 {
     private static readonly TimeSpan Deadline = TimeSpan.FromSeconds(5);
 
@@ -15,7 +15,9 @@ internal static class Program
         try
         {
             _ = LocalizationService.Current.GetString("ExecutorCancelled");
-            return Task.Run(RunAsync).GetAwaiter().GetResult();
+            var editorFailures = RunEditorTests(application);
+            var executionResult = Task.Run(RunAsync).GetAwaiter().GetResult();
+            return editorFailures == 0 ? executionResult : 1;
         }
         finally
         {
@@ -34,8 +36,9 @@ internal static class Program
             ("Capture errors fail immediately", () => FailsImmediatelyAsync(MatchFailureReason.CaptureFailed)),
             ("Matching errors fail immediately", () => FailsImmediatelyAsync(MatchFailureReason.MatchingError)),
             ("Unchecked actions attempt one match", UncheckedActionMatchesOnceAsync),
-            ("Checked actions survive 31 seconds and stop manually", CheckedActionWaitsPastThirtySecondsAsync),
-            ("Stopping during a successful match prevents action execution", StopDuringSuccessfulMatchAsync)
+            ("Infinite waiting overrides skip timeout beyond 31 seconds", CheckedActionWaitsPastThirtySecondsAsync),
+            ("Stopping during a successful match prevents action execution", StopDuringSuccessfulMatchAsync),
+            .. SkipTests
         ];
 
         var failures = 0;
@@ -133,7 +136,9 @@ internal static class Program
         var completion = ObserveCompletion(executor);
         try
         {
-            Require(executor.Start(CreateProfile(waitUntilFound: false)), "The macro did not start.");
+            var profile = CreateProfile(waitUntilFound: false);
+            ((FindImageAction)profile.Actions[0]).SkipTimeoutSeconds = 300;
+            Require(executor.Start(profile), "The macro did not start.");
             var result = await completion.WaitAsync(Deadline);
             Require(!result.Success && executor.State == MacroExecutionState.Stopped,
                 "An unchecked action must still stop on a missing image.");
@@ -159,7 +164,11 @@ internal static class Program
         var completion = ObserveCompletion(executor);
         try
         {
-            Require(executor.Start(CreateProfile(waitUntilFound: true)), "The macro did not start.");
+            var profile = CreateProfile(waitUntilFound: true);
+            var action = (FindImageAction)profile.Actions[0];
+            action.SkipIfNotFound = true;
+            action.SkipTimeoutSeconds = 1;
+            Require(executor.Start(profile), "The macro did not start.");
             await firstMatch.Task.WaitAsync(Deadline);
             await Task.WhenAny(completion, Task.Delay(TimeSpan.FromSeconds(31)));
             Require(!completion.IsCompleted && executor.IsRunning,

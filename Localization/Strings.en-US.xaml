@@ -66,6 +66,13 @@
     <sys:String x:Key="EditorOffsetX">X offset</sys:String>
     <sys:String x:Key="EditorOffsetY">Y offset</sys:String>
     <sys:String x:Key="EditorWaitUntilFound">Wait until found</sys:String>
+    <sys:String x:Key="EditorSkipIfNotFound">Skip if not found</sys:String>
+    <sys:String x:Key="EditorSkipIfNotFoundHint">Continue to the next step when no match is found. Wait until found takes precedence; image or capture errors still stop the macro.</sys:String>
+    <sys:String x:Key="EditorSkipTimeoutSeconds">Search before skipping (0-300 seconds)</sys:String>
+    <sys:String x:Key="EditorSkipTimeoutHint">0: try once. 1-300: keep searching until found or timed out. Original loop settings still apply.</sys:String>
+    <sys:String x:Key="ActionSkipIfNotFoundSuffix"> (skip if missing after {0}s)</sys:String>
+    <sys:String x:Key="ExecutorImageSkipped">No match within the configured {0}s search; step skipped</sys:String>
+    <sys:String x:Key="StatusSkipped">Skipped</sys:String>
     <sys:String x:Key="EditorAdaptiveScale">Adaptive scaling (slower; useful for DPI or window scaling changes)</sys:String>
     <sys:String x:Key="EditorWaitSettings">Wait</sys:String>
     <sys:String x:Key="EditorWaitSeconds">Wait time (seconds)</sys:String>

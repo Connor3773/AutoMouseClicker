@@ -323,6 +323,23 @@
                                           IsChecked="{Binding WaitUntilFound}"
                                           Margin="0,0,0,10"/>
 
+                                <CheckBox Content="{DynamicResource EditorSkipIfNotFound}"
+                                          Style="{StaticResource ModernCheckBox}"
+                                          IsChecked="{Binding SkipIfNotFound}"
+                                          IsEnabled="{Binding CanSkipIfNotFound}"
+                                          ToolTip="{DynamicResource EditorSkipIfNotFoundHint}"
+                                          ToolTipService.ShowOnDisabled="True"
+                                          Margin="0,0,0,8"/>
+                                <StackPanel IsEnabled="{Binding CanEditSkipTimeout}" Margin="24,0,0,12">
+                                    <TextBlock Text="{DynamicResource EditorSkipTimeoutSeconds}"
+                                               Style="{StaticResource LabelText}" Margin="0,0,0,4"/>
+                                    <TextBox Text="{Binding SkipTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}"
+                                             Height="32" Style="{StaticResource ModernTextBox}"
+                                             LostFocus="OnSkipTimeoutLostFocus" Margin="0,0,0,4"/>
+                                    <TextBlock Text="{DynamicResource EditorSkipTimeoutHint}"
+                                               Style="{StaticResource CaptionText}" TextWrapping="Wrap"/>
+                                </StackPanel>
+
                                 <CheckBox Content="{DynamicResource EditorAdaptiveScale}"
                                           Style="{StaticResource ModernCheckBox}"
                                           IsChecked="{Binding AdaptiveScale}"/>
