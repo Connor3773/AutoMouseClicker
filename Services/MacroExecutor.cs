@@ -111,11 +111,6 @@ namespace Ming_AutoClicker.Services
         public event EventHandler<MacroExecutionState>? StateChanged;
 
         /// <summary>
-        /// 找图匹配超时时间（毫秒）
-        /// </summary>
-        public int FindImageTimeoutMs { get; set; } = 30000;
-
-        /// <summary>
         /// 找图检查间隔（毫秒）
         /// </summary>
         public int FindImageIntervalMs { get; set; } = 200;
@@ -423,7 +418,7 @@ namespace Ming_AutoClicker.Services
                 matchResult = await _imageMatchService.WaitForImageAsync(
                     action.ImagePath,
                     action.MatchThreshold,
-                    FindImageTimeoutMs,
+                    Timeout.Infinite,
                     FindImageIntervalMs,
                     cancellationToken,
                     action.AdaptiveScale);

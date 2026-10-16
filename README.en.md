@@ -49,7 +49,7 @@ Ming AutoClicker is a WPF and OpenCV desktop automation tool with continuous cli
 - Fast default scale search and optional adaptive scaling from 0.5x to 2.0x
 - Adjustable similarity threshold (80% by default)
 - Full-screen region capture or local image upload
-- “Wait until found” polling mode
+- "Wait until found" polling mode continues until the target is found or manually stopped, with no 30-second timeout
 - Multi-monitor, negative-coordinate, and DPI-aware capture
 - Visual match results with score, scale, threshold, method, and elapsed time
 
@@ -128,7 +128,7 @@ The application checks GitHub Releases on startup. When a required update is ava
 | Match threshold | Minimum similarity required for a successful match |
 | Operation | Left-click or right-click after a match |
 | X/Y offset | Offset from the center of the matched image |
-| Wait until found | Keep searching until the image appears or the operation times out |
+| Wait until found | Keep searching until the image is found or you manually stop, with no 30-second timeout; invalid templates, capture failures, and matching errors still stop with an error |
 | Adaptive scaling | Search a wider scale range when DPI or window scaling changes |
 
 ### Settings and Hotkeys
@@ -154,6 +154,11 @@ Supported hotkeys are `F1`–`F12`, or `Ctrl` / `Alt` / `Shift` combined with a 
 ---
 
 ## Changelog
+
+### v1.0.1
+
+- Fixed "Wait until found" stopping after 30 seconds; it now keeps searching until a match is found or the macro is manually stopped.
+- Preserved invalid-template, capture, and matching error handling, and added regression tests without real mouse input.
 
 ### v1.0.0
 

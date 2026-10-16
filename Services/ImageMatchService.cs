@@ -174,7 +174,7 @@ namespace Ming_AutoClicker.Services
             _screenCaptureService = screenCaptureService ?? throw new ArgumentNullException(nameof(screenCaptureService));
         }
 
-        public MatchResult FindImage(string templatePath, double threshold = DefaultThreshold, bool adaptiveScale = false)
+        public virtual MatchResult FindImage(string templatePath, double threshold = DefaultThreshold, bool adaptiveScale = false)
         {
             var stopwatch = Stopwatch.StartNew();
             try
@@ -444,6 +444,7 @@ namespace Ming_AutoClicker.Services
             }
         }
 
+        /// <param name="timeoutMs">Maximum wait in milliseconds, or Timeout.Infinite to wait until found or cancelled.</param>
         public async Task<MatchResult> WaitForImageAsync(
             string templatePath,
             double threshold = DefaultThreshold,
@@ -455,7 +456,7 @@ namespace Ming_AutoClicker.Services
             var totalStopwatch = Stopwatch.StartNew();
             MatchResult? bestCandidate = null;
 
-            while (totalStopwatch.ElapsedMilliseconds < timeoutMs)
+            while (timeoutMs == Timeout.Infinite || totalStopwatch.ElapsedMilliseconds < timeoutMs)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {

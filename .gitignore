@@ -9,6 +9,9 @@ TODO.md
 bin/
 obj/
 
+# Project-local SDK and package cache
+.tools/
+
 # Runtime user data and updater workspace
 Data/*.json
 Data/screenshots/

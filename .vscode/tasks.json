@@ -3,9 +3,9 @@
   "tasks": [
     {
       "label": "build",
-      "command": "dotnet",
+      "command": "powershell.exe",
       "type": "process",
-      "args": ["build", "${workspaceFolder}/Ming-AutoClicker.csproj"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/dev.ps1", "build", "${workspaceFolder}/Ming-AutoClicker.csproj"],
       "problemMatcher": "$msCompile"
     }
   ]
